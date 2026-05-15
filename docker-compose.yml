@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  intent-service:
+    build:
+      context: ./intent_service
+      dockerfile: Dockerfile
+    ports:
+      - "50051:50051"
+    environment:
+      GRPC_PORT: 50051
+      INTENT_MODE: heuristic
+      OLLAMA_BASE_URL: http://ollama:11434
+      OLLAMA_MODEL: gpt-oss:20b
+    depends_on:
+      - ollama
+
+  api-gateway:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      INTENT_SERVICE_HOST: intent-service
+      INTENT_SERVICE_PORT: 50051
+      OLLAMA_BASE_URL: http://ollama:11434
+      OLLAMA_MODEL: gpt-oss:20b
+    depends_on:
+      - intent-service
+      - ollama
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    environment:
+      API_BASE_URL: http://api-gateway:8000
+    depends_on:
+      - api-gateway
+
+volumes:
+  ollama_data:

@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  intent-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "50051:50051"
+    environment:
+      GRPC_PORT: 50051
+      INTENT_MODE: heuristic
+      OLLAMA_BASE_URL: http://ollama:11434
+      OLLAMA_MODEL: gpt-oss:20b
