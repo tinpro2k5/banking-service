@@ -28,6 +28,18 @@ class ValidationNode:
             "statement",
             "branch",
             "customer service",
+            "banking",
+            "credit",
+            "debit",
+            "withdrawal",
+            "deposit",
+            "fee",
+            "interest",
+            "overdraft",
+            "suspicious",
+            "fraud",
+            "bill",
+            "charge"
         ]
         if not any(term in draft.lower() for term in banking_terms):
             issues.append("Draft may lack banking-specific content.")

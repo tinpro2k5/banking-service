@@ -1,6 +1,6 @@
 # Banking Service Backend
 
-This folder contains the API Gateway for the banking microservice system.
+This folder contains the backend API service for the banking microservice system.
 
 Endpoints:
 
@@ -8,4 +8,4 @@ Endpoints:
 - `GET /config`
 - `POST /run-agent`
 
-The gateway calls the intent service through gRPC and Ollama through HTTP.
+The backend calls the intent service through gRPC and an Ollama endpoint through HTTP.

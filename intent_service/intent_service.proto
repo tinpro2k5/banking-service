@@ -3,7 +3,7 @@ syntax = "proto3";
 package intent_classify.v1;
 
 service IntentService {
-    rpc PredictIntent (IntentRequest) returns (IntentResponse) {}
+    rpc IntentRecognizer (IntentRequest) returns (IntentResponse) {}
 }
 
 message IntentRequest {

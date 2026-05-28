@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-
+from app.clients.base import BaseLLMClient
 from app.clients.ollama_client import OllamaClient
 from app.core.schemas import DraftResult
 
@@ -13,7 +13,7 @@ _PLACEHOLDER_RE = re.compile(r"\[([^\]]{3,50})\]")
 
 class DraftNode:
     def __init__(self) -> None:
-        self.client = OllamaClient()
+        self.client: BaseLLMClient = OllamaClient()
 
     @staticmethod
     def _extract_missing_info(draft: str) -> str | None:
@@ -46,7 +46,8 @@ Missing information:
 Next recommended action:
 
 Keep the response concise, polite, and specific to banking support. If no extra information is needed, write None under Missing information.
-"""
+If any information is missing, indicate each missing item as a placeholder inside square brackets, for example [ACCOUNT_ID] or [TRANSACTION_DATE].
+    """
         try:
             draft = self.client.generate(prompt).strip()
         except Exception:

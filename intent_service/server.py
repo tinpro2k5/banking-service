@@ -16,7 +16,7 @@ class IntentService(intent_service_pb2_grpc.IntentServiceServicer):
     def __init__(self) -> None:
         self._classifier = IntentNode()
 
-    def PredictIntent(self, request, context):
+    def IntentRecognizer(self, request, context):
         result = self._classifier.run(request.message)
         return intent_service_pb2.IntentResponse(
             intent=result.intent,

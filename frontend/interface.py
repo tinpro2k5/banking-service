@@ -53,12 +53,12 @@ st.markdown(
 with st.sidebar:
     st.header("Gateway")
     st.write(API_BASE_URL)
-    st.caption("The frontend calls POST /run-agent on the API Gateway.")
+    st.caption("The frontend calls POST /run-agent on the backend service.")
     st.divider()
     st.caption("Microservices")
-    st.write("• api-gateway")
+    st.write("• backend")
     st.write("• intent-service")
-    st.write("• ollama")
+    st.write("• Ollama endpoint (external)")
 
 message = st.text_area(
     "Customer message",

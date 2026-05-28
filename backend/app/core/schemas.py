@@ -1,4 +1,6 @@
-"""Pydantic schemas shared by the API gateway."""
+"""Pydantic schemas shared by the API gateway.
+Used in multiple nodes and the main API handler"
+"""
 
 from typing import Literal, Optional
 

@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 from app.clients.grpc_intent_client import GrpcIntentClient
+from app.clients.base import BaseIntentClient
 from app.core.schemas import IntentResult
 
 
 class IntentNode:
     def __init__(self) -> None:
-        self._client = GrpcIntentClient()
+        self._client: BaseIntentClient = GrpcIntentClient()
 
     def run(self, message: str) -> IntentResult:
         try:
