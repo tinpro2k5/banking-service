@@ -43,7 +43,5 @@ class ValidationNode:
         ]
         if not any(term in draft.lower() for term in banking_terms):
             issues.append("Draft may lack banking-specific content.")
-        if intent == "unknown_intent":
-            issues.append("Intent service could not identify the message with confidence.")
         valid = len(issues) == 0
         return ValidationResult(valid=valid, issues="; ".join(issues) if issues else None)

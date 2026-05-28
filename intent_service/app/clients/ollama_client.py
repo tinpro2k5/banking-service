@@ -12,7 +12,12 @@ class OllamaClient(BaseLLMClient):
     def generate(self, prompt: str) -> str:
         response = requests.post(
             f"{settings.ollama_base_url.rstrip('/')}/api/generate",
-            json={"model": settings.intent_model_name, "prompt": prompt, "stream": False},
+            json={
+                "model": settings.intent_model_name,
+                "prompt": prompt,
+                "stream": False,
+                "format": "json",
+            },
             timeout=120,
         )
         response.raise_for_status()

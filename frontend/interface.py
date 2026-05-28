@@ -11,6 +11,10 @@ import streamlit as st
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
 
 
+def clear_message() -> None:
+    st.session_state["message_input"] = ""
+
+
 st.set_page_config(page_title="Banking Service", page_icon="🏦", layout="wide")
 
 st.markdown(
@@ -64,13 +68,14 @@ message = st.text_area(
     "Customer message",
     placeholder="Example: My card payment was declined at the supermarket yesterday.",
     height=180,
+    key="message_input",
 )
 
 col_left, col_right = st.columns([1, 1])
 with col_left:
     run_clicked = st.button("Run agent", use_container_width=True)
 with col_right:
-    st.button("Clear", use_container_width=True, on_click=lambda: st.session_state.update({"_clear": True}))
+    st.button("Clear", use_container_width=True, on_click=clear_message)
 
 if run_clicked:
     if not message.strip():
