@@ -16,7 +16,7 @@ class OllamaClient(BaseLLMClient):
                 "model": settings.intent_model_name,
                 "prompt": prompt,
                 "stream": False,
-                "format": "json",
+                #"format": "json",
             },
             timeout=120,
         )

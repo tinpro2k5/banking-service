@@ -9,6 +9,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+      PYTHONPATH: /src:/src/app/clients/intent_grpc
       INTENT_SERVICE_HOST: intent-service
       INTENT_SERVICE_PORT: 50051
       OLLAMA_BASE_URL: http://host.docker.internal:11434
@@ -46,7 +47,7 @@ services:
       - backend
     networks:
       - public_net
-
+    
 networks:
   public_net:
     name: banking_public_net

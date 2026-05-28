@@ -14,6 +14,9 @@ class BaseLLMClient(ABC):
     @abstractmethod
     def generate(self, prompt: str) -> str:
         raise NotImplementedError
+    def chat(self, messages: list[dict[str, str]]) -> str:
+        """Optional method for LLMs that support chat-based interactions."""
+        raise NotImplementedError("This LLM client does not support chat interactions.")
 
 @dataclass
 class IntentPrediction:

@@ -16,8 +16,10 @@ class RouterNode:
         confidence: Optional[float],
         missing_info: Optional[str] = None,
     ) -> RouterResult:
-        if priority == "high" or not valid:
-            return RouterResult(action="escalate", reason="High priority or validation failed; route to a human agent.")
+        if priority == "high":
+            return RouterResult(action="escalate", reason="High priority issue; route to a human agent.")
+        if not valid:
+            return RouterResult(action="ask_more", reason="Validation failed; request more details from the customer.")
         if missing_info:
             return RouterResult(action="ask_more", reason="Draft requires additional information from the customer.")
         if intent == "unknown_intent":
