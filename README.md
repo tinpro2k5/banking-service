@@ -246,35 +246,5 @@ Available services:
 | `frontend` | `8501` | Streamlit UI that sends customer messages to `POST /run-agent` and displays the final reply plus workflow details. |
 | External Ollama server | `11434` or tunnel URL | Shared LLM server used by both the API Gateway and Intent Service. |
 
-## API Test
-
-Check API Gateway health:
-
-```bash
-curl http://localhost:8000/health
-```
-
-Check runtime configuration:
-
-```bash
-curl http://localhost:8000/config
-```
-
-Run the full agent workflow:
-
-```bash
-curl -X POST http://localhost:8000/run-agent \
-  -H "Content-Type: application/json" \
-  -d "{\"message\":\"My card payment was declined yesterday at the supermarket.\"}"
-```
-
-Expected output includes:
-
-- predicted intent
-- confidence score
-- priority level
-- retrieved policy
-- draft reply
-- validation result
-- routing decision
-- final reply
+[Video demo](https://drive.google.com/file/d/1enqrnnBxp0oMvVkWBGcz3z7PDz-_rkEG/view?usp=sharing)
+[Colab notebook](https://colab.research.google.com/drive/1E51m3gGHLqglWhI-sTSt3l3fizvKuwXl?usp=sharing)
