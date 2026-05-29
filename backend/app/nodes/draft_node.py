@@ -41,6 +41,10 @@ Current Context:
 - Priority level: {priority}
 - Relevant policy: {policy}
 
+Follow these rules strictly:
+- Ask for additional information ONLY if it is essential to move forward.
+- If the customer already provided key identifiers (e.g., order ID, account number), do NOT ask for extra documents unless absolutely required.
+
 You MUST respond ONLY with a JSON object matching this schema:
 {{
     "draft_reply": "Your polite, concise, and specific banking support reply here",

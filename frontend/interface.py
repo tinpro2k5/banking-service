@@ -31,7 +31,7 @@ DEMO_MESSAGES = [
     },
     {
         "label": "📦 Refund missing",
-        "message": "I returned the product on 2026-05-02 and my refund for order 771245 still has not shown up in my account.",
+        "message": "I returned the product on 2026-05-02 and my refund for order 771245 still has not shown up in my account number 1234.",
         "badge": "reply",
     },
     {
@@ -166,7 +166,7 @@ st.markdown(
           /* Result cards: cleaner layout and lighter tones */
           .results-grid {
               display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+              grid-template-columns: 1fr;
               gap: 1.25rem;
               align-items: start;
               margin: 0.5rem 0 1.25rem !important;
@@ -195,7 +195,7 @@ st.markdown(
               border-radius: 0.6rem;
               padding: 0.75rem 0.85rem;
               border: 1px solid rgba(148, 163, 184, 0.35);
-              overflow: hidden;
+              overflow: auto;
               white-space: pre-wrap;
               word-break: break-word;
           }
