@@ -1,11 +1,11 @@
 version: "3.9"
 
 services:
-  backend:
+  api-gateway:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: banking-backend
+    container_name: api-gateway
     ports:
       - "8000:8000"
     environment:
@@ -42,9 +42,9 @@ services:
     ports:
       - "8501:8501"
     environment:
-      API_BASE_URL: http://backend:8000
+      API_BASE_URL: http://api-gateway:8000
     depends_on:
-      - backend
+      - api-gateway
     networks:
       - public_net
     

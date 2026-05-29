@@ -13,8 +13,52 @@ import streamlit as st
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
 
 
+DEMO_MESSAGES = [
+    {
+        "label": "💸 Transfer not received",
+        "message": "I made a transfer 3 days ago but the recipient hasn't received the money.",
+        "badge": "ask_more",
+    },
+    {
+        "label": "🚫 Card blocked",
+        "message": "My card was blocked and I can't make any payments.",
+        "badge": "escalate",
+    },
+    {
+        "label": "⚠️ Unauthorized payment",
+        "message": "Someone made an unauthorized card payment of $79.40 on my account ending 4432 yesterday.",
+        "badge": "escalate",
+    },
+    {
+        "label": "📦 Refund missing",
+        "message": "I returned the product on 2026-05-02 and my refund for order 771245 still has not shown up in my account.",
+        "badge": "reply",
+    },
+    {
+        "label": "💰 Check balance",
+        "message": "How do I check my account balance.",
+        "badge": "reply",
+    },
+    {
+        "label": "❓ Unknown issue",
+        "message": "My grandmother's account keeps making beeping sounds.",
+        "badge": "ask_more",
+    },
+]
+
+BADGE_COLORS = {
+    "reply":    ("#dcfce7", "#15803d"),
+    "escalate": ("#fee2e2", "#b91c1c"),
+    "ask_more": ("#fef9c3", "#854d0e"),
+}
+
+
 def clear_message() -> None:
     st.session_state["message_input"] = ""
+
+
+def set_message(text: str) -> None:
+    st.session_state["message_input"] = text
 
 
 st.set_page_config(page_title="Banking Service", page_icon="🏦", layout="wide")
@@ -122,15 +166,10 @@ st.markdown(
           /* Result cards: cleaner layout and lighter tones */
           .results-grid {
               display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+              grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
               gap: 1.25rem;
               align-items: start;
               margin: 0.5rem 0 1.25rem !important;
-          }
-          .results-stack {
-              display: grid;
-              grid-template-columns: 1fr;
-              gap: 1rem;
           }
           .result-card {
               background: #ffffff;
@@ -138,6 +177,7 @@ st.markdown(
               border-radius: 0.9rem;
               padding: 0.85rem 1rem 0.9rem;
               box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+              overflow: hidden;
           }
           .result-card .card-title {
               font-size: 1.05rem;
@@ -155,11 +195,20 @@ st.markdown(
               border-radius: 0.6rem;
               padding: 0.75rem 0.85rem;
               border: 1px solid rgba(148, 163, 184, 0.35);
-              overflow: auto;
+              overflow: hidden;
+              white-space: pre-wrap;
+              word-break: break-word;
           }
           .result-card code {
               color: inherit;
               background: transparent;
+          }
+          /* Draft and Validation: full-width cards stacked below grid */
+          .results-wide {
+              display: grid;
+              grid-template-columns: 1fr;
+              gap: 1rem;
+              margin: 0 0 1.25rem !important;
           }
         /* Reduce the overly large dark bars (expander headers / dividers) */
         .streamlit-expanderHeader, div[data-testid="stDivider"] {
@@ -218,6 +267,41 @@ with st.sidebar:
     st.write("• backend")
     st.write("• intent-service")
     st.write("• Ollama endpoint (external)")
+    st.divider()
+    st.markdown(
+        """
+        <div style="font-size:0.92rem; font-weight:700; color:#0f172a;
+                    margin-bottom:0.5rem; letter-spacing:0.01em;">
+            ⚡ Quick Demo
+        </div>
+        <div style="font-size:0.78rem; color:#6b7280; margin-bottom:0.75rem;">
+            Click a message to load it instantly.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    for demo in DEMO_MESSAGES:
+        bg, fg = BADGE_COLORS.get(demo["badge"], ("#f3f4f6", "#374151"))
+        st.markdown(
+            f"""
+            <div style="display:flex; align-items:center; gap:0.4rem;
+                        margin-bottom:0.15rem;">
+                <span style="background:{bg}; color:{fg}; font-size:0.68rem;
+                             font-weight:700; padding:0.1rem 0.45rem;
+                             border-radius:999px; white-space:nowrap;">
+                    {demo['badge']}
+                </span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.button(
+            demo["label"],
+            key=f"demo_{demo['label']}",
+            use_container_width=True,
+            on_click=set_message,
+            args=(demo["message"],),
+        )
 
 st.markdown(
     '<div style="margin: 0.25rem 0 0.35rem; color: #152033; font-weight: 600;">Customer message</div>',
@@ -268,11 +352,11 @@ if run_clicked:
                     unsafe_allow_html=True,
                 )
 
-                with st.expander("Draft and validation"):
-                    st.markdown(
-                        "<div class=\"results-stack\">"
-                        f"{render_result_card('Draft', result['draft'])}"
-                        f"{render_result_card('Validation', result['validation'])}"
-                        "</div>",
-                        unsafe_allow_html=True,
-                    )
+                wide_cards = [
+                    render_result_card("Draft", result["draft"]),
+                    render_result_card("Validation", result["validation"]),
+                ]
+                st.markdown(
+                    f"<div class=\"results-wide\">{''.join(wide_cards)}</div>",
+                    unsafe_allow_html=True,
+                )
